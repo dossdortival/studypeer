@@ -1,0 +1,28 @@
+/* Ensure full height layout */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Wrapper to structure the page layout */
+body {
+    display: flex;
+    flex-direction: column;
+    font-family: 'Roboto', Arial, sans-serif;
+    color: #333;
+    background-color: #f4f4f4;
+    text-align: center;
+}
+
+/* Main content should grow to fill space */
+main {
+    flex: 1;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
