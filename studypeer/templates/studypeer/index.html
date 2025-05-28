@@ -1,0 +1,14 @@
+{% extends "studypeer/layout.html" %}
+
+{% block body %}
+
+    <h2>Welcome To StudyPeer</h2>
+
+    <p class="lead">Connect with peers, join study groups, and enhance your learning experience.</p>
+
+    {% if not user.is_authenticated %}
+        <p class="alert alert-info">Please log in or register to start using StudyPeer.</p>
+    {% endif %}
+    <hr>
+    <img src="https://images.pexels.com/photos/6684550/pexels-photo-6684550.jpeg" alt="Study Group Image" />  
+{% endblock %}
