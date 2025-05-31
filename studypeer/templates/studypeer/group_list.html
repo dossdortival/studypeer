@@ -2,7 +2,6 @@
 
 {% block body %}
 <h2>Study Groups</h2>
-<a href="{% url 'create_group' %}" class="btn btn-primary">Create New Group</a>
 <ul>
   {% for group in groups %}
     <li>
@@ -10,4 +9,8 @@
     </li>
   {% endfor %}
 </ul>
+
+<hr/>
+
+<a href="{% url 'create_group' %}" class="btn btn-primary">Create New Group</a>
 {% endblock %}

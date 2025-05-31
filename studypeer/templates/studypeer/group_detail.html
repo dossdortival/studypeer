@@ -11,6 +11,32 @@
 <p>Max Members: {{ group.max_members }}</p>
 <p>Created By: {{ group.creator.username }}</p>
 
+<h4>Members ({{ group.memberships.count }}/{{ group.max_members }})</h4>
+<ul>
+  {% for member in group.memberships.all %}
+    <li>{{ member.user.username }} (Joined {{ member.joined_at|date:"M d, Y" }})</li>
+  {% endfor %}
+</ul>
+{% if group.memberships.count == 0 %}
+    <p>No members yet.</p>
+{% endif %}
+
+{% if user.is_authenticated and user != group.creator %}
+    {% if user.id in member_user_ids %}
+        <form method="post" action="{% url 'leave_group' group.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Leave Group</button>
+        </form>
+    {% elif not group.is_full %}
+        <form method="post" action="{% url 'join_group' group.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success">Join Group</button>
+        </form>
+    {% else %}
+        <p class="text-warning">This group is full.</p>
+    {% endif %}
+{% endif %}
+
 {% if request.user == group.creator %}
   <a href="{% url 'update_group' group.id %}" class="btn btn-warning">Edit</a>
   <form method="post" action="{% url 'delete_group' group.id %}" style="display:inline;">

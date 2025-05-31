@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
@@ -72,8 +73,10 @@ def group_list(request):
 # View a single group
 def group_detail(request, group_id):
     group = get_object_or_404(StudyGroup, id=group_id)
+    member_user_ids = set(group.memberships.values_list('user_id', flat=True))
     return render(request, 'studypeer/group_detail.html', {
-        'group': group
+        'group': group,
+        'member_user_ids': member_user_ids,
         })
 
 
@@ -120,3 +123,34 @@ def delete_group(request, group_id):
     return render(request, 'studypeer/group_confirm_delete.html', {
         'group': group
         })
+
+
+@login_required
+def join_group(request, group_id):
+    group = get_object_or_404(StudyGroup, id=group_id)
+
+    if group.is_full():
+        messages.error(request, "This group is already full.")
+        return redirect('group_detail', group_id=group_id)
+
+    if Membership.objects.filter(user=request.user, group=group).exists():
+        messages.info(request, "You are already a member of this group.")
+    else:
+        Membership.objects.create(user=request.user, group=group)
+        messages.success(request, f"You have joined '{group.title}'.")
+
+    return redirect('group_detail', group_id=group_id)
+
+
+@login_required
+def leave_group(request, group_id):
+    group = get_object_or_404(StudyGroup, id=group_id)
+
+    membership = Membership.objects.filter(user=request.user, group=group).first()
+    if membership:
+        membership.delete()
+        messages.success(request, f"You have left '{group.title}'.")
+    else:
+        messages.warning(request, "You are not a member of this group.")
+
+    return redirect('group_detail', group_id=group_id)
