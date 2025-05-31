@@ -27,7 +27,7 @@
                     </li>
                 {% endif %}
                 <li class="nav-item">
-                  <a class="nav-link text-white" href="{% url 'index' %}">Browse Groups</a>
+                  <a class="nav-link text-white" href="{% url 'group_list' %}">Browse Groups</a>
                 </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item">
@@ -51,6 +51,14 @@
 
     <!-- Main Content -->
     <main class="container my-4">
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li class="alert alert-{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
         {% block body %}{% endblock %}
     </main>
 
