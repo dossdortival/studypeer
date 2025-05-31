@@ -1,0 +1,22 @@
+{% extends "studypeer/layout.html" %}
+
+{% block body %}
+
+<h2>{{ group.title }}</h2>
+<p>{{ group.description }}</p>
+<p>Subject: {{ group.subject.name }}</p>
+<p>Meeting Time: {{ group.meeting_times }}</p>
+<p>Location: {{ group.location }}</p>
+<p>Active: {{ group.is_active }}</p>
+<p>Max Members: {{ group.max_members }}</p>
+<p>Created By: {{ group.creator.username }}</p>
+
+{% if request.user == group.creator %}
+  <a href="{% url 'update_group' group.id %}" class="btn btn-warning">Edit</a>
+  <form method="post" action="{% url 'delete_group' group.id %}" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Delete</button>
+  </form>
+{% endif %}
+
+{% endblock %}

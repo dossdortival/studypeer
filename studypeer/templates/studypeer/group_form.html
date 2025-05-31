@@ -1,0 +1,12 @@
+{% extends "studypeer/layout.html" %}
+
+{% block body %}
+
+<h2>{{ action }} Study Group</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" class="btn btn-success">{{ action }}</button>
+</form>
+
+{% endblock %}

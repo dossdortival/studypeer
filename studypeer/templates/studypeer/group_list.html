@@ -1,0 +1,13 @@
+{% extends "studypeer/layout.html" %}
+
+{% block body %}
+<h2>Study Groups</h2>
+<a href="{% url 'create_group' %}" class="btn btn-primary">Create New Group</a>
+<ul>
+  {% for group in groups %}
+    <li>
+      <a href="{% url 'group_detail' group.id %}">{{ group.title }}</a> – {{ group.subject.name }}
+    </li>
+  {% endfor %}
+</ul>
+{% endblock %}
