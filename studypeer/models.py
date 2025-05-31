@@ -24,7 +24,7 @@ class StudyGroup(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='groups')
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_groups')
     members = models.ManyToManyField(User, related_name='study_groups')
-    meeting_times = models.JSONField(_('meeting times'), default=list)
+    meeting_times = models.DateTimeField()
     location = models.CharField(_('location'), max_length=200)
     max_members = models.PositiveIntegerField(_('max members'), default=10)
     is_active = models.BooleanField(_('is active'), default=True)
