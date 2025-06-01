@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.db import IntegrityError
 
@@ -130,27 +130,22 @@ def join_group(request, group_id):
     group = get_object_or_404(StudyGroup, id=group_id)
 
     if group.is_full():
-        messages.error(request, "This group is already full.")
-        return redirect('group_detail', group_id=group_id)
-
-    if Membership.objects.filter(user=request.user, group=group).exists():
-        messages.info(request, "You are already a member of this group.")
+        return JsonResponse({'success': False, 'message': 'This group is already full.'}, status=400)
+    
+    created = Membership.objects.get_or_create(user=request.user, group=group)
+    if created:
+        return JsonResponse({'success': True, 'action': 'joined'})
     else:
-        Membership.objects.create(user=request.user, group=group)
-        messages.success(request, f"You have joined '{group.title}'.")
-
-    return redirect('group_detail', group_id=group_id)
+        return JsonResponse({'success': False, 'message': 'Already a member.'}, status=400)
 
 
 @login_required
 def leave_group(request, group_id):
     group = get_object_or_404(StudyGroup, id=group_id)
-
+    
     membership = Membership.objects.filter(user=request.user, group=group).first()
     if membership:
         membership.delete()
-        messages.success(request, f"You have left '{group.title}'.")
+        return JsonResponse({'success': True, 'action': 'left'})
     else:
-        messages.warning(request, "You are not a member of this group.")
-
-    return redirect('group_detail', group_id=group_id)
+        return JsonResponse({'success': False, 'message': 'Not a member.'}, status=400)

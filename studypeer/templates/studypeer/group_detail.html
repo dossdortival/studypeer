@@ -1,5 +1,7 @@
 {% extends "studypeer/layout.html" %}
 
+{% load static %}
+
 {% block body %}
 
 <h2>{{ group.title }}</h2>
@@ -11,31 +13,32 @@
 <p>Max Members: {{ group.max_members }}</p>
 <p>Created By: {{ group.creator.username }}</p>
 
-<h4>Members ({{ group.memberships.count }}/{{ group.max_members }})</h4>
-<ul>
+
+<div id="member-count">
+  <h4>Members ({{ group.memberships.count }}/{{ group.max_members }})</h4>
+  <ul>
   {% for member in group.memberships.all %}
     <li>{{ member.user.username }} (Joined {{ member.joined_at|date:"M d, Y" }})</li>
   {% endfor %}
-</ul>
-{% if group.memberships.count == 0 %}
+  </ul>
+  {% if group.memberships.count == 0 %}
     <p>No members yet.</p>
-{% endif %}
+  {% endif %}
+</div>
 
-{% if user.is_authenticated and user != group.creator %}
+
+<div id="membership-controls" data-group-id="{{ group.id }}">
+  {% if user.is_authenticated and user != group.creator %}
     {% if user.id in member_user_ids %}
-        <form method="post" action="{% url 'leave_group' group.id %}">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-danger">Leave Group</button>
-        </form>
+      <button id="leave-btn" class="btn btn-danger">Leave Group</button>
     {% elif not group.is_full %}
-        <form method="post" action="{% url 'join_group' group.id %}">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-success">Join Group</button>
-        </form>
+      <button id="join-btn" class="btn btn-success">Join Group</button>
     {% else %}
-        <p class="text-warning">This group is full.</p>
+      <p class="text-warning">This group is full.</p>
     {% endif %}
-{% endif %}
+  {% endif %}
+</div>
+
 
 {% if request.user == group.creator %}
   <a href="{% url 'update_group' group.id %}" class="btn btn-warning">Edit</a>
@@ -46,3 +49,8 @@
 {% endif %}
 
 {% endblock %}
+
+{% block script %}
+<script src="{% static 'studypeer/group_detail.js' %}"></script>
+{% endblock %}
+
