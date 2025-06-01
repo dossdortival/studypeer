@@ -1,0 +1,31 @@
+{% extends "studypeer/layout.html" %}
+
+{% block body %}
+<h2>Dashboard</h2>
+
+<h3>Your Created Groups</h3>
+{% if created_groups %}
+  <ul>
+    {% for group in created_groups %}
+      <li>
+        <a href="{% url 'group_detail' group.id %}">{{ group.title }}</a> ({{ group.subject.name }})
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>You haven't created any groups yet.</p>
+{% endif %}
+
+<h3>Your Joined Groups</h3>
+{% if joined_groups %}
+  <ul>
+    {% for group in joined_groups %}
+      <li>
+        <a href="{% url 'group_detail' group.id %}">{{ group.title }}</a> ({{ group.subject.name }})
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>You haven't joined any groups yet.</p>
+{% endif %}
+{% endblock %}

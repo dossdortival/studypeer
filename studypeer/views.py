@@ -142,10 +142,24 @@ def join_group(request, group_id):
 @login_required
 def leave_group(request, group_id):
     group = get_object_or_404(StudyGroup, id=group_id)
-    
+
     membership = Membership.objects.filter(user=request.user, group=group).first()
     if membership:
         membership.delete()
         return JsonResponse({'success': True, 'action': 'left'})
     else:
         return JsonResponse({'success': False, 'message': 'Not a member.'}, status=400)
+    
+
+@login_required
+def dashboard(request):
+    created_groups = StudyGroup.objects.filter(creator=request.user)
+    joined_groups = StudyGroup.objects.filter(
+        memberships__user=request.user
+    ).exclude(creator=request.user)
+
+    context = {
+        'created_groups': created_groups,
+        'joined_groups': joined_groups
+    }
+    return render(request, 'studypeer/dashboard.html', context)

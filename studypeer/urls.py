@@ -18,10 +18,7 @@ urlpatterns = [
     # Membership URLs
     path('groups/<int:group_id>/join/', views.join_group, name='join_group'),
     path('groups/<int:group_id>/leave/', views.leave_group, name='leave_group'),
-    #path('groups/<int:group_id>/members/', views.group_members, name='group_members'),
-    #path('groups/<int:group_id>/members/add/', views.add_member, name='add_member'),
-    #path('groups/<int:group_id>/members/remove/', views.remove_member, name='remove_member'),
 
-    # User Profile URLs     
-
+    # Dashboard URL    
+    path('dashboard/', views.dashboard, name='dashboard'),
 ]
