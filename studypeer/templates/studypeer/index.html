@@ -7,7 +7,7 @@
     <p class="lead">Connect with peers, join study groups, and enhance your learning experience.</p>
 
     {% if not user.is_authenticated %}
-        <p class="alert alert-info">Please log in or register to start using StudyPeer.</p>
+        <p class="alert alert-info">Please <a href="{% url 'login' %}">Log In</a> or <a href="{% url 'register' %}">Register</a> to start using StudyPeer.</p>
     {% endif %}
     <hr>
     <img src="https://images.pexels.com/photos/6684550/pexels-photo-6684550.jpeg" alt="Study Group Image" />  
