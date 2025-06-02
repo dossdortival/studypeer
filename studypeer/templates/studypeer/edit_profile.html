@@ -1,0 +1,27 @@
+{% extends "studypeer/layout.html" %}
+
+{% block body %}
+
+<h2>Edit Profile</h2>
+
+<form method="post" class="card p-3 shadow-sm">
+  {% csrf_token %}
+
+  <div class="mb-3">
+    <label for="username" class="form-label">Username:</label>
+    <input type="text" name="username" id="username" class="form-control"
+           value="{{ user.username }}" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="email" class="form-label">Email:</label>
+    <input type="email" name="email" id="email" class="form-control"
+           value="{{ user.email }}" required>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Save Changes</button>
+  
+  <a href="{% url 'profile' %}" class="btn btn-secondary">Cancel</a>
+</form>
+
+{% endblock %}

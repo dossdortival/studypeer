@@ -1,0 +1,15 @@
+{% extends "studypeer/layout.html" %}
+
+{% block body %}
+
+<h2>My Profile</h2>
+
+<div class="card p-3 shadow-sm">
+  <p><strong>Username:</strong> {{ user.username }}</p>
+  <p><strong>Email:</strong> {{ user.email }}</p>
+  <p><strong>Date Joined:</strong> {{ user.date_joined|date:"M d, Y" }}</p>
+</div>
+
+<a href="{% url 'edit_profile' %}" class="btn btn-primary mt-3">Edit Profile</a>
+
+{% endblock %}

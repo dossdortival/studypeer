@@ -163,3 +163,34 @@ def dashboard(request):
         'joined_groups': joined_groups
     }
     return render(request, 'studypeer/dashboard.html', context)
+
+
+@login_required
+def profile(request):
+    return render(request, 'studypeer/profile.html', {
+        'user': request.user
+    })
+
+
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+
+        if not username or not email:
+            messages.error(request, "Both username and email are required.")
+            return redirect('edit_profile')
+
+        # Update user
+        user = request.user
+        user.username = username
+        user.email = email
+        user.save()
+
+        messages.success(request, "Profile updated successfully.")
+        return redirect('profile')
+
+    return render(request, 'studypeer/edit_profile.html', {
+        'user': request.user
+    })
