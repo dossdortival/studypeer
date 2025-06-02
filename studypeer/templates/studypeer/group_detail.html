@@ -39,6 +39,7 @@
   {% endif %}
 </div>
 
+<a href="{% url 'group_list' %}" class="btn btn-primary mt-3">Back To Group List</a>
 
 {% if request.user == group.creator %}
   <a href="{% url 'update_group' group.id %}" class="btn btn-warning">Edit</a>

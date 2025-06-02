@@ -4,7 +4,7 @@
 
     <h2>Welcome To StudyPeer</h2>
 
-    <p class="lead">Connect with peers, join study groups, and enhance your learning experience.</p>
+    <p class="lead">Connect with peers, join <a href="{% url 'group_list' %}">study groups</a>, and enhance your learning experience.</p>
 
     {% if not user.is_authenticated %}
         <p class="alert alert-info">Please <a href="{% url 'login' %}">Log In</a> or <a href="{% url 'register' %}">Register</a> to start using StudyPeer.</p>
